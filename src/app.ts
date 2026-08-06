@@ -14,10 +14,16 @@ const whitelist = [
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
-    if (!origin || whitelist.includes(origin)) {
+    if (
+      !origin ||
+      whitelist.includes(origin) ||
+      origin.includes("netlify.app") ||
+      origin.includes("vercel.app") ||
+      origin.includes("helisa.com.ec")
+    ) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(null, true); // Fallback allow in case of new domains
     }
   },
   credentials: true,
