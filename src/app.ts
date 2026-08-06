@@ -10,6 +10,11 @@ const whitelist = [
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:8101",
+  "https://helisa.netlify.app",
+  "http://helisa.netlify.app",
+  "https://helisa.com.ec",
+  "https://helisa.com.ec/",
+  "http://helisa.com.ec",
 ];
 
 const corsOptions: cors.CorsOptions = {
@@ -23,7 +28,7 @@ const corsOptions: cors.CorsOptions = {
     ) {
       callback(null, true);
     } else {
-      callback(null, true); // Fallback allow in case of new domains
+      callback(null, true);
     }
   },
   credentials: true,
