@@ -2,6 +2,8 @@ import { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { AuthRequest, JwtPayload } from "../types/AuthRequest";
 
+const DEFAULT_JWT_SECRET = "helisa_secret_key_2026_super_secure";
+
 export function authMiddleware(req: AuthRequest, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
@@ -13,7 +15,8 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
+    const jwtSecret = process.env.JWT_SECRET || DEFAULT_JWT_SECRET;
+    const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
     req.user = decoded;
     next();
   } catch (error) {

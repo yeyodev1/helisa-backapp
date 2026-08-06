@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/User";
 import { AuthRequest } from "../types/AuthRequest";
 
+const DEFAULT_JWT_SECRET = "helisa_secret_key_2026_super_secure";
+
 export async function login(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { email, password } = req.body;
@@ -25,7 +27,7 @@ export async function login(req: Request, res: Response, next: NextFunction): Pr
       return;
     }
 
-    const jwtSecret = process.env.JWT_SECRET || "helisa_secret";
+    const jwtSecret = process.env.JWT_SECRET || DEFAULT_JWT_SECRET;
     const token = jwt.sign(
       { userId: user._id.toString(), email: user.email, role: user.role },
       jwtSecret,
