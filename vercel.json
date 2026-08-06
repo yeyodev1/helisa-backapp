@@ -1,6 +1,17 @@
 {
-  "buildCommand": null,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/api" }
+  "version": 2,
+  "framework": null,
+  "buildCommand": "echo ok",
+  "builds": [
+    {
+      "src": "api/index.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/index.ts"
+    }
   ]
 }
