@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import mongoose from "mongoose";
 import { Product } from "../models/Product";
 
 export async function getProducts(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -102,7 +103,14 @@ export async function updateProduct(req: Request, res: Response, next: NextFunct
 export async function deleteProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { id } = req.params;
-    const deleted = await Product.findByIdAndDelete(id);
+    let deleted;
+
+    if (typeof id === "string" && mongoose.Types.ObjectId.isValid(id)) {
+      deleted = await Product.findByIdAndDelete(id);
+    } else {
+      deleted = await Product.findOneAndDelete({ slug: id });
+    }
+
     if (!deleted) {
       res.status(404).json({ message: "Producto no encontrado" });
       return;

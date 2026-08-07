@@ -1,3 +1,4 @@
+import "./config/dns-patch";
 import dotenv from "dotenv";
 import { dbConnect } from "./config/mongo";
 import { createApp } from "./app";

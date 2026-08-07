@@ -1,3 +1,4 @@
+import "../config/dns-patch";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
