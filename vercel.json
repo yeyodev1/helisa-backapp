@@ -2,6 +2,11 @@
   "version": 2,
   "framework": null,
   "buildCommand": "echo ok",
+  "functions": {
+    "api/index.ts": {
+      "maxDuration": 60
+    }
+  },
   "builds": [
     {
       "src": "api/index.ts",
