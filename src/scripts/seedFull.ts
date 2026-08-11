@@ -9,10 +9,10 @@ import { Project } from "../models/Project";
 
 dotenv.config();
 
-import { accessoryCategories } from "../../../helisa-frontapp/src/data/accessoryProducts";
-import { domesticCategories } from "../../../helisa-frontapp/src/data/domesticProducts";
-import { industrialCategories } from "../../../helisa-frontapp/src/data/industrialProducts";
-import { projects as staticProjects } from "../../../helisa-frontapp/src/data/projects";
+import { accessoryCategories } from "../data/accessoryProducts";
+import { domesticCategories } from "../data/domesticProducts";
+import { industrialCategories } from "../data/industrialProducts";
+import { projects as staticProjects } from "../data/projects";
 
 const allCatalogCategories = [
   ...industrialCategories,

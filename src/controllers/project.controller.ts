@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import mongoose from "mongoose";
 import { Project } from "../models/Project";
 
 export async function getProjects(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -92,7 +93,14 @@ export async function createProject(req: Request, res: Response, next: NextFunct
 export async function updateProject(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { id } = req.params;
-    const updated = await Project.findByIdAndUpdate(id, req.body, { new: true });
+    let updated;
+
+    if (typeof id === "string" && mongoose.Types.ObjectId.isValid(id)) {
+      updated = await Project.findByIdAndUpdate(id, req.body, { new: true });
+    } else {
+      updated = await Project.findOneAndUpdate({ slug: id }, req.body, { new: true });
+    }
+
     if (!updated) {
       res.status(404).json({ message: "Proyecto no encontrado" });
       return;

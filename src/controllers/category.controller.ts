@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import mongoose from "mongoose";
 import { Category } from "../models/Category";
 
 export async function getCategories(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -61,7 +62,14 @@ export async function createCategory(req: Request, res: Response, next: NextFunc
 export async function updateCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { id } = req.params;
-    const updated = await Category.findByIdAndUpdate(id, req.body, { new: true });
+    let updated;
+
+    if (typeof id === "string" && mongoose.Types.ObjectId.isValid(id)) {
+      updated = await Category.findByIdAndUpdate(id, req.body, { new: true });
+    } else {
+      updated = await Category.findOneAndUpdate({ slug: id }, req.body, { new: true });
+    }
+
     if (!updated) {
       res.status(404).json({ message: "Categoría no encontrada" });
       return;

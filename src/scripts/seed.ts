@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import { User } from "../models/User";
 import { Category } from "../models/Category";
 import { Product } from "../models/Product";
-import { productCategories } from "../../../helisa-frontapp/src/data/products";
+import { productCategories } from "../data/products";
 
 dotenv.config();
 

@@ -89,7 +89,14 @@ export async function createProduct(req: Request, res: Response, next: NextFunct
 export async function updateProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { id } = req.params;
-    const updated = await Product.findByIdAndUpdate(id, req.body, { new: true });
+    let updated;
+
+    if (typeof id === "string" && mongoose.Types.ObjectId.isValid(id)) {
+      updated = await Product.findByIdAndUpdate(id, req.body, { new: true });
+    } else {
+      updated = await Product.findOneAndUpdate({ slug: id }, req.body, { new: true });
+    }
+
     if (!updated) {
       res.status(404).json({ message: "Producto no encontrado" });
       return;
