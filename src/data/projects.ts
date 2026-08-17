@@ -479,9 +479,12 @@ export const projects: Project[] = [
     category: "Sector Agrícola",
     location: "Ecuador",
     description: "Sistema industrial de tratamiento de agua diseñado para cumplir con las más estrictas normativas internacionales de calidad y exportación.",
-    image: "https://res.cloudinary.com/bmtcnrkr/image/upload/v1783372899/helisa/projects/imagen-agua.jpg",
+    image: "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994053/helisa/projects/cqkblzewue19yqfrowzp.jpg",
     gallery: [
-      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1783372899/helisa/projects/imagen-agua.jpg"
+      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994053/helisa/projects/cqkblzewue19yqfrowzp.jpg",
+      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994056/helisa/projects/b5wdo1aa1nqxlpqch1cy.jpg",
+      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994059/helisa/projects/osjtucuz5vsobod2sjd5.jpg",
+      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994062/helisa/projects/yrjo9lqtjsz40pgeewrh.jpg"
     ],
     highlights: [
       "Filtros",
@@ -628,9 +631,12 @@ export const projects: Project[] = [
     category: "Sector Industrial",
     location: "Ecuador",
     description: "Sistema de ultra pureza para el sector energético. Combina ultrafiltración y ósmosis inversa para proteger equipos industriales críticos y garantizar operaciones eficientes y seguras.",
-    image: "https://res.cloudinary.com/bmtcnrkr/image/upload/v1783372899/helisa/projects/imagen-agua.jpg",
+    image: "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994143/helisa/projects/oqlvr2q5yn5r09q8rbek.jpg",
     gallery: [
-      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1783372899/helisa/projects/imagen-agua.jpg"
+      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994143/helisa/projects/oqlvr2q5yn5r09q8rbek.jpg",
+      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994145/helisa/projects/t8oliymh4erc31qdnmcs.jpg",
+      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994146/helisa/projects/lqbw9dysigqrbdd1fujf.jpg",
+      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994148/helisa/projects/zjwb5ftwb0vaxqcmsbkd.jpg"
     ],
     highlights: [
       "Filtros",
@@ -782,9 +788,12 @@ export const projects: Project[] = [
     category: "Sector Salud",
     location: "Ecuador",
     description: "Tratamiento de agua de grado médico que garantiza agua ultrapura para procesos de hemodiálisis, cumpliendo con los más estrictos estándares de bioseguridad y protección al paciente.",
-    image: "https://res.cloudinary.com/bmtcnrkr/image/upload/v1783372899/helisa/projects/imagen-agua.jpg",
+    image: "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994069/helisa/projects/gdbgvokoqghmk1ifewuq.png",
     gallery: [
-      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1783372899/helisa/projects/imagen-agua.jpg"
+      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994069/helisa/projects/gdbgvokoqghmk1ifewuq.png",
+      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994073/helisa/projects/kivjvmal9hmgwoskjn62.png",
+      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994076/helisa/projects/dixfikvryizo79zsbj2a.png",
+      "https://res.cloudinary.com/bmtcnrkr/image/upload/v1786994079/helisa/projects/zmqjcsxzq16f70tgol0s.png"
     ],
     highlights: [
       "Filtros",

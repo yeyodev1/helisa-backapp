@@ -5,6 +5,7 @@ import categoryRoutes from "./category.routes";
 import productRoutes from "./product.routes";
 import projectRoutes from "./project.routes";
 import uploadRoutes from "./upload.routes";
+import aboutRoutes from "./about.routes";
 
 function routerApi(app: Application) {
   const router = express.Router();
@@ -16,6 +17,7 @@ function routerApi(app: Application) {
   router.use("/products", productRoutes);
   router.use("/projects", projectRoutes);
   router.use("/upload", uploadRoutes);
+  router.use("/about", aboutRoutes);
 }
 
 export default routerApi;
