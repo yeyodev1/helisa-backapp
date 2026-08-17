@@ -1,8 +1,7 @@
 import { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { env } from "../config/env";
 import { AuthRequest, JwtPayload } from "../types/AuthRequest";
-
-const DEFAULT_JWT_SECRET = "helisa_secret_key_2026_super_secure";
 
 export function authMiddleware(req: AuthRequest, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
@@ -15,12 +14,22 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
   const token = authHeader.split(" ")[1];
 
   try {
-    const jwtSecret = process.env.JWT_SECRET || DEFAULT_JWT_SECRET;
-    const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
+    const decoded = jwt.verify(token, env.jwtSecret) as JwtPayload;
     req.user = decoded;
     next();
   } catch (error) {
     res.status(401).json({ message: "Invalid or expired token" });
     return;
   }
+}
+
+// Debe usarse después de authMiddleware. Sin esto, cualquier cuenta autenticada
+// (incluida una con role "user") podía crear/editar/eliminar cualquier recurso,
+// incluidos otros usuarios y auto-promoverse a admin.
+export function requireAdmin(req: AuthRequest, res: Response, next: NextFunction) {
+  if (req.user?.role !== "admin") {
+    res.status(403).json({ message: "No tienes permisos para realizar esta acción" });
+    return;
+  }
+  next();
 }

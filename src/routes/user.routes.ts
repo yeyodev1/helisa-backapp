@@ -6,11 +6,11 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/user.controller";
-import { authMiddleware } from "../middlewares/auth.middleware";
+import { authMiddleware, requireAdmin } from "../middlewares/auth.middleware";
 
 const router = Router();
 
-router.use(authMiddleware);
+router.use(authMiddleware, requireAdmin);
 
 router.get("/", getUsers);
 router.get("/:id", getUserById);

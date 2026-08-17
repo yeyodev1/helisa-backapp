@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import { Category } from "../models/Category";
+import { forwardMongoError } from "../utils/mongoErrors";
 
 export async function getCategories(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
@@ -55,19 +56,20 @@ export async function createCategory(req: Request, res: Response, next: NextFunc
 
     res.status(201).json(category);
   } catch (error) {
-    next(error);
+    forwardMongoError(error, next);
   }
 }
 
 export async function updateCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { id } = req.params;
+    const options = { new: true, runValidators: true };
     let updated;
 
     if (typeof id === "string" && mongoose.Types.ObjectId.isValid(id)) {
-      updated = await Category.findByIdAndUpdate(id, req.body, { new: true });
+      updated = await Category.findByIdAndUpdate(id, req.body, options);
     } else {
-      updated = await Category.findOneAndUpdate({ slug: id }, req.body, { new: true });
+      updated = await Category.findOneAndUpdate({ slug: id }, req.body, options);
     }
 
     if (!updated) {
@@ -76,14 +78,21 @@ export async function updateCategory(req: Request, res: Response, next: NextFunc
     }
     res.json(updated);
   } catch (error) {
-    next(error);
+    forwardMongoError(error, next);
   }
 }
 
 export async function deleteCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { id } = req.params;
-    const deleted = await Category.findByIdAndDelete(id);
+    let deleted;
+
+    if (typeof id === "string" && mongoose.Types.ObjectId.isValid(id)) {
+      deleted = await Category.findByIdAndDelete(id);
+    } else {
+      deleted = await Category.findOneAndDelete({ slug: id });
+    }
+
     if (!deleted) {
       res.status(404).json({ message: "Categoría no encontrada" });
       return;

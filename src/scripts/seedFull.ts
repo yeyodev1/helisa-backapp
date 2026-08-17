@@ -31,19 +31,23 @@ async function seedFull() {
     await mongoose.connect(DB_URI);
     console.log("Conectado a MongoDB Atlas. Ejecutando Seed Optimizado...");
 
-    // 1. Seed Default Admin User
-    const adminEmail = "dreyes@bakano.ec";
-    const existingUser = await User.findOne({ email: adminEmail });
-
-    if (!existingUser) {
-      const hashedPassword = await bcrypt.hash("123456789", 10);
-      await User.create({
-        name: "Diego Reyes (Admin)",
-        email: adminEmail,
-        password: hashedPassword,
-        role: "admin",
-      });
-      console.log(`✅ Usuario admin verificado/creado: ${adminEmail}`);
+    // 1. Seed Default Admin User (credentials come from env, never hardcoded/committed)
+    const adminEmail = process.env.SEED_ADMIN_EMAIL;
+    const adminPassword = process.env.SEED_ADMIN_PASSWORD;
+    if (!adminEmail || !adminPassword) {
+      console.log("ℹ️ SEED_ADMIN_EMAIL/SEED_ADMIN_PASSWORD no definidos, se omite la creación del admin.");
+    } else {
+      const existingUser = await User.findOne({ email: adminEmail });
+      if (!existingUser) {
+        const hashedPassword = await bcrypt.hash(adminPassword, 10);
+        await User.create({
+          name: "Admin",
+          email: adminEmail,
+          password: hashedPassword,
+          role: "admin",
+        });
+        console.log(`✅ Usuario admin verificado/creado: ${adminEmail}`);
+      }
     }
 
     // 2. Prepare Categories and Products for Bulk Upsert

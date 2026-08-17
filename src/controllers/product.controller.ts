@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import { Product } from "../models/Product";
+import { forwardMongoError } from "../utils/mongoErrors";
 
 export async function getProducts(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
@@ -82,19 +83,20 @@ export async function createProduct(req: Request, res: Response, next: NextFunct
 
     res.status(201).json(product);
   } catch (error) {
-    next(error);
+    forwardMongoError(error, next);
   }
 }
 
 export async function updateProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { id } = req.params;
+    const options = { new: true, runValidators: true };
     let updated;
 
     if (typeof id === "string" && mongoose.Types.ObjectId.isValid(id)) {
-      updated = await Product.findByIdAndUpdate(id, req.body, { new: true });
+      updated = await Product.findByIdAndUpdate(id, req.body, options);
     } else {
-      updated = await Product.findOneAndUpdate({ slug: id }, req.body, { new: true });
+      updated = await Product.findOneAndUpdate({ slug: id }, req.body, options);
     }
 
     if (!updated) {
@@ -103,7 +105,7 @@ export async function updateProduct(req: Request, res: Response, next: NextFunct
     }
     res.json(updated);
   } catch (error) {
-    next(error);
+    forwardMongoError(error, next);
   }
 }
 

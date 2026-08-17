@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import { Project } from "../models/Project";
+import { forwardMongoError } from "../utils/mongoErrors";
 
 export async function getProjects(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
@@ -86,19 +87,20 @@ export async function createProject(req: Request, res: Response, next: NextFunct
 
     res.status(201).json(project);
   } catch (error) {
-    next(error);
+    forwardMongoError(error, next);
   }
 }
 
 export async function updateProject(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     const { id } = req.params;
+    const options = { new: true, runValidators: true };
     let updated;
 
     if (typeof id === "string" && mongoose.Types.ObjectId.isValid(id)) {
-      updated = await Project.findByIdAndUpdate(id, req.body, { new: true });
+      updated = await Project.findByIdAndUpdate(id, req.body, options);
     } else {
-      updated = await Project.findOneAndUpdate({ slug: id }, req.body, { new: true });
+      updated = await Project.findOneAndUpdate({ slug: id }, req.body, options);
     }
 
     if (!updated) {
@@ -107,7 +109,7 @@ export async function updateProject(req: Request, res: Response, next: NextFunct
     }
     res.json(updated);
   } catch (error) {
-    next(error);
+    forwardMongoError(error, next);
   }
 }
 

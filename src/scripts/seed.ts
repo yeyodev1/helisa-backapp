@@ -20,21 +20,25 @@ async function seed() {
     await mongoose.connect(DB_URI);
     console.log("Conectado a MongoDB Atlas para Seed Completo...");
 
-    // 1. Seed Default Admin User
-    const adminEmail = "dreyes@bakano.ec";
-    const existingUser = await User.findOne({ email: adminEmail });
-
-    if (!existingUser) {
-      const hashedPassword = await bcrypt.hash("123456789", 10);
-      await User.create({
-        name: "Diego Reyes (Admin)",
-        email: adminEmail,
-        password: hashedPassword,
-        role: "admin",
-      });
-      console.log(`✅ Usuario creado: ${adminEmail} / 123456789`);
+    // 1. Seed Default Admin User (credentials come from env, never hardcoded/committed)
+    const adminEmail = process.env.SEED_ADMIN_EMAIL;
+    const adminPassword = process.env.SEED_ADMIN_PASSWORD;
+    if (!adminEmail || !adminPassword) {
+      console.log("ℹ️ SEED_ADMIN_EMAIL/SEED_ADMIN_PASSWORD no definidos, se omite la creación del admin.");
     } else {
-      console.log(`ℹ️ Usuario ${adminEmail} ya existía.`);
+      const existingUser = await User.findOne({ email: adminEmail });
+      if (!existingUser) {
+        const hashedPassword = await bcrypt.hash(adminPassword, 10);
+        await User.create({
+          name: "Admin",
+          email: adminEmail,
+          password: hashedPassword,
+          role: "admin",
+        });
+        console.log(`✅ Usuario admin creado: ${adminEmail}`);
+      } else {
+        console.log(`ℹ️ Usuario ${adminEmail} ya existía.`);
+      }
     }
 
     // 2. Seed All Categories and All Products from productCategories

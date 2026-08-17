@@ -45,7 +45,7 @@ export async function createUser(req: Request, res: Response, next: NextFunction
       name,
       email: email.toLowerCase(),
       password: hashedPassword,
-      role: role || "admin",
+      role: role === "admin" ? "admin" : "user",
     });
 
     res.status(201).json({

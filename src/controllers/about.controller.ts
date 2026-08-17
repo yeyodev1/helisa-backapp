@@ -26,12 +26,17 @@ const DEFAULT_ABOUT = {
   ],
 };
 
+// El "About" es un singleton: siempre debe existir como máximo un documento.
+// findOneAndUpdate con upsert es atómico a nivel de MongoDB, a diferencia de
+// un findOne() seguido de un create() condicional, que puede crear dos
+// documentos si dos requests llegan al mismo tiempo contra una colección vacía.
 export async function getAbout(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    let about = await About.findOne();
-    if (!about) {
-      about = await About.create(DEFAULT_ABOUT);
-    }
+    const about = await About.findOneAndUpdate(
+      {},
+      { $setOnInsert: DEFAULT_ABOUT },
+      { new: true, upsert: true }
+    );
     res.json(about);
   } catch (error) {
     next(error);
@@ -42,18 +47,22 @@ export async function updateAbout(req: Request, res: Response, next: NextFunctio
   try {
     const { storyImage, storyParagraphs, values, timeline } = req.body;
 
-    const update: Record<string, any> = {};
-    if (storyImage !== undefined) update.storyImage = storyImage;
-    if (storyParagraphs !== undefined) update.storyParagraphs = storyParagraphs;
-    if (values !== undefined) update.values = values;
-    if (timeline !== undefined) update.timeline = timeline;
+    const set: Record<string, any> = {};
+    if (storyImage !== undefined) set.storyImage = storyImage;
+    if (storyParagraphs !== undefined) set.storyParagraphs = storyParagraphs;
+    if (values !== undefined) set.values = values;
+    if (timeline !== undefined) set.timeline = timeline;
 
-    let about = await About.findOne();
-    if (!about) {
-      about = await About.create({ ...DEFAULT_ABOUT, ...update });
-    } else {
-      about = await About.findByIdAndUpdate(about._id, update, { new: true });
+    const setOnInsert: Record<string, any> = {};
+    for (const key of Object.keys(DEFAULT_ABOUT) as (keyof typeof DEFAULT_ABOUT)[]) {
+      if (!(key in set)) setOnInsert[key] = DEFAULT_ABOUT[key];
     }
+
+    const about = await About.findOneAndUpdate(
+      {},
+      { $set: set, $setOnInsert: setOnInsert },
+      { new: true, upsert: true, runValidators: true }
+    );
 
     res.json(about);
   } catch (error) {

@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { v2 as cloudinary } from "cloudinary";
+import { env } from "../config/env";
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "bmtcnrkr",
-  api_key: process.env.CLOUDINARY_API_KEY || "779171622821869",
-  api_secret: process.env.CLOUDINARY_API_SECRET || "1I8QQByfWPnaLNiww_hUNrAWDMQ",
+  cloud_name: env.cloudinaryCloudName,
+  api_key: env.cloudinaryApiKey,
+  api_secret: env.cloudinaryApiSecret,
 });
 
 export async function uploadImage(req: Request, res: Response, next: NextFunction): Promise<void> {

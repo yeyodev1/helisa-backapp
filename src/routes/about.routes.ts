@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { getAbout, updateAbout } from "../controllers/about.controller";
-import { authMiddleware } from "../middlewares/auth.middleware";
+import { authMiddleware, requireAdmin } from "../middlewares/auth.middleware";
 
 const router = Router();
 
 router.get("/", getAbout);
-router.put("/", authMiddleware, updateAbout);
+router.put("/", authMiddleware, requireAdmin, updateAbout);
 
 export default router;

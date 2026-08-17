@@ -6,15 +6,15 @@ import {
   updateCategory,
   deleteCategory,
 } from "../controllers/category.controller";
-import { authMiddleware } from "../middlewares/auth.middleware";
+import { authMiddleware, requireAdmin } from "../middlewares/auth.middleware";
 
 const router = Router();
 
 router.get("/", getCategories);
 router.get("/:slug", getCategoryBySlug);
 
-router.post("/", authMiddleware, createCategory);
-router.put("/:id", authMiddleware, updateCategory);
-router.delete("/:id", authMiddleware, deleteCategory);
+router.post("/", authMiddleware, requireAdmin, createCategory);
+router.put("/:id", authMiddleware, requireAdmin, updateCategory);
+router.delete("/:id", authMiddleware, requireAdmin, deleteCategory);
 
 export default router;
